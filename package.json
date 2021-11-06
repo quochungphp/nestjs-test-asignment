@@ -17,6 +17,7 @@
     "test:cov": "jest --config ./test/jest-unit.json --coverage",
     "test:integration": "cross-env IS_INTEGRATION_TESTING=true TZ=GMT/UTC jest --runInBand --bail --reporters default jest-stare --detectOpenHandles --forceExit --verbose",
     "test:integration:auth": "npm run test:integration -- auth.controller.spec.ts",
+    "test:integration:users": "npm run test:integration -- users.controller.spec.ts",
     "test:integration:app": "npm run test:integration -- app.controller.spec.ts",
     "test:integration:watch": "cross-env IS_RUNNING_TEST=true jest --detectOpenHandles --watchAll --verbose ",
     "test:integration:cov": "cross-env IS_RUNNING_TEST=true jest --detectOpenHandles  --coverage --verbose",

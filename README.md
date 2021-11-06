@@ -49,6 +49,9 @@ export PG_PASS=password
 export PG_DB=dbtest
 export PORT=9090
 
+export DATABASE_URL=postgres://user_login:password@127.0.0.1:5432/db-test
+export DATABASE_TEST_URL=postgres://user_login:password@127.0.0.1:5432/db-integration-test
+
 export REDIS_HOST=127.0.0.1
 export REDIS_PORT=6379
 export REDIS_CACHE_EXPIRES_IN=604800

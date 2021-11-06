@@ -1,0 +1,27 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id        BigInt    @id(map: "users_pk") @default(autoincrement())
+  name      String    @db.VarChar(50)
+  username  String    @unique @db.VarChar(50)
+  password  String    @db.VarChar(100)
+  createdAt DateTime? @default(dbgenerated("LOCALTIMESTAMP")) @db.Timestamp(6)
+  roleType  roleType  @default(USER)
+
+  @@index([createdAt], map: "createdAt_IDX")
+  @@index([roleType], map: "roleType_IDX")
+}
+
+enum roleType {
+  ADMIN
+  USER
+  EDITOR
+}

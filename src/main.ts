@@ -14,7 +14,7 @@ dotenvExpand(config());
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   bootstrapApp(app);
-  const { port, environment, host } = new ConfigService('.env');
+  const { port, environment, host } = new ConfigService();
 
   const logMessage = `api server started host: ${host}:${port} `;
   await (environment === 'production'

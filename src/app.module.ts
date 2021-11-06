@@ -2,8 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 
 @Module({
-  imports: [
-  ],
+  imports: [],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {

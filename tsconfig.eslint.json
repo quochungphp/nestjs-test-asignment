@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*",
+    "typings/**/*",
+    "test/**/*.ts",
+    "test/setupTests.js",
+    ".eslintrc.js",
+    "knexfile.ts",
+    "commitlint.config.js",
+  ]
+}

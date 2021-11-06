@@ -1,0 +1,9 @@
+**/.git
+node_modules
+dist
+.eslintcache
+jest-stare/
+coverage/
+.DS_Store
+test/state.txt
+newrelic_agent.log

@@ -89,7 +89,7 @@ INSERT INTO public.users (name, username, "password", "createdAt", "roleType") V
 INSERT INTO public.users (name, username, "password", "createdAt", "roleType") VALUES('DevOps','devops', '$2a$10$MSlzbaal5/i3PMaGMDocjefbyQzdR58MWMyWA1JrFScgsmO4Fku62', '2021-10-31 08:20:35.159', 'USER');
 ```
 
-## Setting project before running
+### Setting project before running
 
 1.Intsall npm packages
 
@@ -138,6 +138,17 @@ npm run test:integration
 
 ```
 npm run test:integration:auth
+```
+### Open API
+
+- After start app server, we can use Open Api
+```link
+http://localhost:3131/api/#/
+```
+### Postman
+- Import postman collection for testing apis
+```postman
+postman/daikou.postman_collection.json
 ```
 ### Ci integration test
 

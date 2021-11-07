@@ -50,6 +50,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   @Post('verify')
   async verifyToken(@Req() request: AppRequest, @Body() dto: AuthVerifyTokenPayloadDto) {
     return this.authVerifyTokenAction.execute(request, dto);

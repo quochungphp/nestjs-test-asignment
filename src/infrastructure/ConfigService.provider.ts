@@ -50,7 +50,7 @@ export class ConfigService {
   }
 
   get redisClusterPort(): number {
-    return Number(process.env.REDIS_CLUSTER_PORT || this.envConfig['REDIS_CLUSTER_PORT']) || 6000;
+    return this.int(process.env.REDIS_CLUSTER_PORT || this.envConfig['REDIS_CLUSTER_PORT'], 6000);
   }
 
   get redisClusterSlaveRead(): string {
@@ -69,43 +69,47 @@ export class ConfigService {
     return process.env.API_KEY || this.envConfig['API_KEY'] || '';
   }
   get useRedisCluster(): boolean {
-    return (
-      (process.env.USE_REDIS_CLUSTER || this.envConfig['USE_REDIS_CLUSTER']) === 'true' || false
-    );
+    return this.bool(process.env.USE_REDIS_CLUSTER || this.envConfig['USE_REDIS_CLUSTER'], false);
   }
   get redisHost(): string {
     return process.env.REDIS_HOST || this.envConfig['REDIS_HOST'] || '';
   }
   get redisPort(): number {
-    return process.env.REDIS_PORT || this.envConfig['REDIS_PORT']
-      ? Number.parseInt(this.envConfig['REDIS_PORT'], 10)
-      : 0;
+    return this.int(process.env.REDIS_PORT || this.envConfig['REDIS_PORT'], 6379);
   }
   get redisPrefix(): string {
-    return this.envConfig['INTEGRATION_TESTING'] === 'true' ? 'dbtest' : 'dbtest';
+    return this.bool(
+      process.env.INTEGRATION_TESTING || this.envConfig['INTEGRATION_TESTING'],
+      false,
+    ) === true
+      ? 'db-integration-test'
+      : 'dbtest';
   }
   get jwtSecret(): string {
-    return this.envConfig['JWT_SECRET'] || 'test';
+    return process.env.JWT_SECRET || this.envConfig['JWT_SECRET'] || 'test';
   }
 
   get accessTokenExpiry(): string {
-    return this.envConfig['ACCESS_TOKEN_EXPIRY'] || '1h';
+    return process.env.ACCESS_TOKEN_EXPIRY || this.envConfig['ACCESS_TOKEN_EXPIRY'] || '1h';
   }
   get saltRounds(): number {
-    return this.int(this.envConfig['SALT_ROUNDS'], 10);
+    return this.int(process.env.SALT_ROUNDS || this.envConfig['SALT_ROUNDS'], 10);
   }
   get preHashSalt(): string {
-    return this.envConfig['PRE_HASH_SALT'] || 'test-hash';
+    return process.env.PRE_HASH_SALT || this.envConfig['PRE_HASH_SALT'] || 'test-hash';
   }
   get isPrismaLogEnabled(): boolean {
-    return this.bool(this.envConfig['IS_PRISMA_LOG_ENABLED'], true);
+    return this.bool(
+      process.env.IS_PRISMA_LOG_ENABLED || this.envConfig['IS_PRISMA_LOG_ENABLED'],
+      true,
+    );
   }
 
   get host(): string {
-    return this.envConfig['HOST'] || '127.0.0.1';
+    return process.env.HOST || this.envConfig['HOST'] || '127.0.0.1';
   }
   get port(): number {
-    return this.int(this.envConfig['PORT'], 3131);
+    return this.int(process.env.PORT || this.envConfig['PORT'], 3131);
   }
 
   get timeToLive(): number {

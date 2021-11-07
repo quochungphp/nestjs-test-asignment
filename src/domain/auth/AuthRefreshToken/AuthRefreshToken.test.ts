@@ -1,5 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import Logger from 'bunyan';
+import { ConfigService } from '../../../infrastructure/ConfigService.provider';
 import { RequestContext } from '../../../pkgs/RequestContext';
 import { AuthSigninAction } from '../AuthSignin/AuthSigninAction.service';
 import { AuthRefreshTokenAction } from './AuthRefreshTokenAction.service';
@@ -21,6 +22,7 @@ describe('AuthRefreshTokenAction', () => {
     };
     authSigninAction = new AuthSigninAction(
       new JwtService({ privateKey: 'INTF55QGsvzKIfsiCQDS4_7iCz' }),
+      new ConfigService(),
     );
     authRefreshTokenAction = new AuthRefreshTokenAction(authSigninAction);
   });

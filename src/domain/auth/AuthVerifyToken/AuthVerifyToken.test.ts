@@ -21,7 +21,10 @@ describe('AuthVerifyTokenAction', () => {
       correlationId: '80939640-6140-463a-90e4-4cdc0e89deb9',
       logger: {} as Logger,
     };
-    authSigninAction = new AuthSigninAction(new JwtService({ privateKey: jwtSecret }));
+    authSigninAction = new AuthSigninAction(
+      new JwtService({ privateKey: jwtSecret }),
+      new ConfigService(),
+    );
     authVerifyTokenAction = new AuthVerifyTokenAction(
       new JwtService({
         privateKey: jwtSecret,

@@ -2,8 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { ConfigService } from '../../../infrastructure/ConfigService.provider';
 import { PrismaService } from '../../../infrastructure/PrismaService.provider';
-import { RedisService } from '../../../infrastructure/RedisService.provider';
-import { IdGeneratorService } from '../../../pkgs/IdGeneratorService';
 import { tearDownTestData } from '../../../pkgs/testHelpers/testHelpers';
 import { hashPassword } from '../../users/hashUser';
 import { setupTestAuthController } from '../setupTesAuthController';
@@ -11,17 +9,13 @@ import { setupTestAuthController } from '../setupTesAuthController';
 describe('AuthController', () => {
   let app: INestApplication;
   let prismaService: PrismaService;
-  let redisService: RedisService;
   let configService: ConfigService;
-  let idGeneratorService: IdGeneratorService;
 
   beforeAll(async () => {
     const appContext = await setupTestAuthController();
     app = appContext.app;
     prismaService = appContext.prismaService;
-    redisService = appContext.redisService;
     configService = appContext.configService;
-    idGeneratorService = appContext.idGeneratorService;
   });
   afterAll(async () => {
     await prismaService.$disconnect();

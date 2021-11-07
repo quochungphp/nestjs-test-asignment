@@ -33,7 +33,7 @@ CREATE USER "user_login" WITH PASSWORD 'password';
 ALTER ROLE "user_login" WITH SUPERUSER;
 ```
 
-5. Create Database
+5. Create two databases
 
 ```bash
 CREATE DATABASE dbtest;
@@ -61,6 +61,7 @@ export REDIS_CACHE_EXPIRES_IN=604800
 ```
 
 6. Create tables and insert test data for both of dbtest and db-test-integration
+- Open Postgres SQL IDE or PG4Admin and copy SQL command into editor and run on both of databases.
 
 ```sql
 CREATE TYPE "roleType" AS ENUM ('ADMIN', 'USER', 'EDITOR');
@@ -101,38 +102,39 @@ npm install
 ```bash
 npx prisma generate
 ```
+3. Commands
 
-### Development
+- Development
 
 ```bash
 npm run dev
 ```
 
-### Buid
+- Buid
 
 ```bash
 npm run build
 ```
 
-### Production
+- Production
 
 ```bash
 npm run start
 ```
 
-### Run Unit Testing
+- Run Unit Testing
 
 ```bash
 npm run test
 ```
 
-### Run Integration Testing
+- Run Integration Testing
 
 ```bash
 npm run test:integration
 ```
 
-### Run a single test integration
+- Run a single test integration
 
 ```
 npm run test:integration:auth

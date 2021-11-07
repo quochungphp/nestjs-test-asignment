@@ -108,6 +108,12 @@ export class ConfigService {
     return this.int(this.envConfig['PORT'], 3131);
   }
 
+  get timeToLive(): number {
+    return this.int(
+      this.envConfig[process.env.REDIS_CACHE_EXPIRES_IN || 'REDIS_CACHE_EXPIRES_IN'],
+      60 * 60 * 24 * 7,
+    );
+  }
   get corsAllowedOrigins(): string[] | string {
     return this.cors(process.env.CORS_ALLOWED_ORIGINS || process.env.CORS_ALLOWED_ORIGINS || 'all');
   }

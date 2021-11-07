@@ -9,6 +9,7 @@ import { AuthRefreshTokenAction } from './AuthRefreshToken/AuthRefreshTokenActio
 import { JwtRefreshTokenStrategy } from './strategies/JwtRefreshStrategy.provider';
 import { InfrastructureModule } from '../../infrastructure/infrastructure.module';
 import { AuthSigninAction } from './AuthSignin/AuthSigninAction.service';
+import { AuthBlackListTokenAction } from './AuthBlackListToken/AuthBlackListTokenAction.service';
 
 @Module({
   imports: [InfrastructureModule],
@@ -21,6 +22,7 @@ import { AuthSigninAction } from './AuthSignin/AuthSigninAction.service';
     AuthVerifyTokenAction,
     AuthValidateAction,
     AuthRefreshTokenAction,
+    AuthBlackListTokenAction,
   ],
   controllers: [AuthController],
 })

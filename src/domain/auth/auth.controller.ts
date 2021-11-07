@@ -1,6 +1,15 @@
 /* eslint-disable unicorn/consistent-destructuring */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthVerifyTokenAction } from './AuthVerifyToken/AuthVerifyTokenAction.service';
 import { LocalAuthGuard } from './guards/LocalAuthGuard.provider';
@@ -11,6 +20,8 @@ import { AppRequest } from '../../pkgs/AppRequest';
 import { AuthSigninAction } from './AuthSignin/AuthSigninAction.service';
 import { AuthVerifyTokenPayloadDto } from './AuthVerifyToken/AuthVerifyTokenPayloadDto';
 import { AuthRefreshTokenPayloadDto } from './AuthRefreshToken/AuthRefreshTokenPayloadDto';
+import { AuthBlackListTokenAction } from './AuthBlackListToken/AuthBlackListTokenAction.service';
+import { JwtAuthGuard } from './guards/JwtAuthGuard.provider';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -19,6 +30,7 @@ export class AuthController {
     private authSigninAction: AuthSigninAction,
     private authVerifyTokenAction: AuthVerifyTokenAction,
     private authRefreshTokenAction: AuthRefreshTokenAction,
+    private authBlackListTokenAction: AuthBlackListTokenAction,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -56,5 +68,12 @@ export class AuthController {
     request.res?.setHeader('accessToken', accessToken);
     request.res?.setHeader('refreshToken', refreshToken);
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('')
+  @HttpCode(HttpStatus.OK)
+  async blackList(@Req() request: AppRequest) {
+    return this.authBlackListTokenAction.execute(request);
   }
 }

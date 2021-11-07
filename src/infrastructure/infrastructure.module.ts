@@ -7,6 +7,7 @@ import { ConfigService } from './ConfigService.provider';
 import { RedisService } from './RedisService.provider';
 import { PrismaService } from './PrismaService.provider';
 import { IdGeneratorService } from '../pkgs/IdGeneratorService';
+import { RedisCacheService } from '../pkgs/RedisCacheService/RedisCacheService';
 
 const configService = new ConfigService();
 const { jwtSecret, accessTokenExpiry } = configService;
@@ -23,7 +24,15 @@ const { jwtSecret, accessTokenExpiry } = configService;
     PassportModule.register({ defaultStrategy: 'jwt' }),
     HttpModule.register({}),
   ],
-  exports: [ConfigService, RedisService, JwtModule, PrismaService, HttpModule, IdGeneratorService],
-  providers: [ConfigService, RedisService, PrismaService, IdGeneratorService],
+  exports: [
+    ConfigService,
+    RedisService,
+    JwtModule,
+    PrismaService,
+    HttpModule,
+    IdGeneratorService,
+    RedisCacheService,
+  ],
+  providers: [ConfigService, RedisService, PrismaService, IdGeneratorService, RedisCacheService],
 })
 export class InfrastructureModule {}

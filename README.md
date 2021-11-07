@@ -150,6 +150,8 @@ http://localhost:3131/api/#/
 ```postman
 postman/daikou.postman_collection.json
 ```
+![image](https://user-images.githubusercontent.com/12770929/140653784-8695a403-a9f8-4ebd-91d5-08c2819670ec.png)
+
 ### Ci integration test
 
 ![image](https://user-images.githubusercontent.com/12770929/140634141-68f34c12-6f25-4846-8c03-65629299266c.png)

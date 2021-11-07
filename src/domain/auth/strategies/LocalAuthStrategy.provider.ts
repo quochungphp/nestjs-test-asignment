@@ -5,7 +5,7 @@ import { AuthValidateAction } from '../AuthValidate/AuthValidateAction.service';
 import { UserResponseDto } from '../../users/UserGet/UserResponseDto';
 
 @Injectable()
-export class LocalAuthStrategy extends PassportStrategy(Strategy) {
+export class LocalAuthStrategy extends PassportStrategy(Strategy, 'passport-local') {
   constructor(private readonly authValidateAction: AuthValidateAction) {
     super();
   }

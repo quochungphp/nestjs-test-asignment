@@ -9,7 +9,7 @@ import { AuthAccessTokenResponseDto } from '../AuthTokenResponseDto';
 
 type AccessTokenPayloadDto = AuthAccessTokenResponseDto;
 @Injectable()
-export class JwtAuthStrategy extends PassportStrategy(Strategy) {
+export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt-auth') {
   constructor(private configService: ConfigService, private redisCacheService: RedisCacheService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

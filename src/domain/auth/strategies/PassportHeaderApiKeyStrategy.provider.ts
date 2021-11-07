@@ -18,7 +18,7 @@ export class PassportHeaderApiKeyStrategy extends PassportStrategy(Strategy, 'ap
     );
   }
 
-  public validate = (apiKey: string, done: Function, request: AppRequest) => {
+  private validate = (apiKey: string, done: Function, request: AppRequest) => {
     if (apiKey && apiKey.length > 0) {
       done(null, true);
     }

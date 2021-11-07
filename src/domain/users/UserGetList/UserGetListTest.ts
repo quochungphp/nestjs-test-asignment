@@ -102,5 +102,70 @@ describe('UserController', () => {
         { id: expect.any(String), name: 'Aministrator', roleType: 'ADMIN' },
       ]);
     });
+
+    it('should return successful when admin gets users filter by name', async () => {
+      const mockUser = {
+        username: 'admin-test',
+        password: '123456@',
+        name: 'Admin Test',
+      };
+
+      const { username, password } = mockUser;
+      const { saltRounds } = configService;
+      const hashPass = await hashAndValidatePassword(password, saltRounds);
+      const userId = await idGeneratorService.getId();
+      userIds.push(userId);
+      await prismaService.users.create({
+        data: {
+          id: userId,
+          ...mockUser,
+          password: hashPass,
+          roleType: roleType.ADMIN,
+        },
+      });
+
+      await prismaService.users.createMany({
+        data: [
+          {
+            username: 'admin-test-1',
+            password: '123456@',
+            name: 'admin-test-1',
+            roleType: roleType.USER,
+          },
+          {
+            username: 'admin-test-2',
+            password: '123456@',
+            name: 'admin-test-2',
+            roleType: roleType.USER,
+          },
+          {
+            username: 'admin-test-3',
+            password: '123456@',
+            name: 'admin-test-3',
+            roleType: roleType.USER,
+          },
+        ],
+      });
+
+      const responseSignin = await request(app.getHttpServer()).post('/auth').send({
+        username,
+        password: '123456@',
+      });
+
+      const { accesstoken } = responseSignin.headers;
+      expect(responseSignin.status).toBe(HttpStatus.OK);
+      const response = await request(app.getHttpServer())
+        .get('/users')
+        .query({ name: 'test' })
+        .set('Authorization', `Bearer ${accesstoken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toMatchObject([
+        { id: expect.any(String), name: 'admin-test-1', roleType: 'USER' },
+        { id: expect.any(String), name: 'admin-test-2', roleType: 'USER' },
+        { id: expect.any(String), name: 'admin-test-3', roleType: 'USER' },
+      ]);
+    });
   });
 });

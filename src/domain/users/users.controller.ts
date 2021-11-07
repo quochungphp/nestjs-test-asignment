@@ -61,7 +61,7 @@ export class UserController {
   @Get('')
   async getUsers(
     @Req() request: AppRequest,
-    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('name') name: string,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {

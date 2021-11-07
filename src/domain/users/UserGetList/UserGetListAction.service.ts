@@ -16,9 +16,10 @@ export class UserGetListAction {
     limit: number,
   ): Promise<UserResponseDto[]> {
     const { user } = context;
+    const offset = Math.abs(limit * Number(page) - limit);
     if (name && name.length > 0) {
       const escapeName = SqlString.escape(`%${name.toLowerCase()}%`);
-      const offset = Math.abs(limit * Number(page) - limit);
+
       const users: UserResponseDto[] = await this.prismaService.$queryRaw`
           SELECT id::TEXT, name, "roleType"::TEXT FROM users u WHERE lower(u."name")
           LIKE ${Prisma.raw(escapeName)}
@@ -29,7 +30,6 @@ export class UserGetListAction {
       `;
       return users;
     }
-
     return this.prismaService.users.findMany({
       where: {
         id: {
@@ -45,7 +45,7 @@ export class UserGetListAction {
         createdAt: 'desc',
       },
       take: limit,
-      skip: page,
+      skip: offset,
     });
   }
 }

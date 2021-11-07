@@ -237,20 +237,13 @@
 			"name": "VerifyToken",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiQW1pbmlzdHJhdG9yIiwicm9sZVR5cGUiOiJBRE1JTiIsInNlc3Npb25JZCI6ImNjOTJlMmE4LWZhOGUtNGRkMi1hNzMyLTMyZmM1NzQ5NDZiYSIsImlhdCI6MTYzNjMwMjg4NCwiZXhwIjoxNjM2MzA2NDg0fQ.wvjyt_M3FivFPAkT6bCYNuFIqn4OnxcUbTDVZRgAQHk\"\n}",
+					"raw": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiYWRtaW4iLCJyb2xlVHlwZSI6IkFETUlOIiwic2Vzc2lvbklkIjoiYWNlYTU5MmUtOTRmZS00NmEzLTg0ZDctNjY0N2E5NjQ0MDYwIiwiaWF0IjoxNjM2MzA2MjAwLCJleHAiOjE2MzYzNDIyMDB9.yKPhMO6-L1VW-2HDhmDnseIjmryVoS6ciu7lVLk4alk\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -271,6 +264,93 @@
 						"api",
 						"auth",
 						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3131/api/users",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3131",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3131/api/users/121",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3131",
+					"path": [
+						"api",
+						"users",
+						"121"
 					]
 				}
 			},

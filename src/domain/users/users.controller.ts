@@ -2,12 +2,14 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
@@ -26,6 +28,9 @@ import { UserCreatePayloadDto } from './UserCreate/UserCreatePayloadDto';
 import { UserGetAction } from './UserGet/UserGetAction.service';
 import { AuthVerifyApiKey } from '../auth/AuthVerifyApiKey/AuthVerifyApiKey';
 import { UserGetListAction } from './UserGetList/UserGetListAction.service';
+import { UserUpdateAction } from './UserUpdate/UserUpdateAction.service';
+import { UserDeleteAction } from './UserDelete/UserDeleteAction.service';
+import { UserUpdatePayloadDto } from './UserUpdate/UserUpdatePayloadDto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -35,6 +40,8 @@ export class UserController {
     private userGetAction: UserGetAction,
     private userCreateAction: UserCreateAction,
     private userGetListAction: UserGetListAction,
+    private userUpdateAction: UserUpdateAction,
+    private userDeleteAction: UserDeleteAction,
   ) {}
 
   @ApiParam({ name: 'id', required: true, type: Number, example: 'Enter user id' })
@@ -44,6 +51,23 @@ export class UserController {
   @Get(':id')
   async details(@Req() request: AppRequest, @Param('id', ParseBigIntPipe) id: bigint) {
     return this.userGetAction.execute(request, id);
+  }
+
+  @ApiParam({ name: 'name', required: true, type: String, example: 'Enter name' })
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @Put('')
+  async update(@Req() request: AppRequest, @Body() dto: UserUpdatePayloadDto) {
+    return this.userUpdateAction.execute(request, dto);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(roleType.ADMIN)
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  async delete(@Req() request: AppRequest, @Param('id', ParseBigIntPipe) id: bigint) {
+    return this.userDeleteAction.execute(request, id);
   }
 
   @HttpCode(HttpStatus.CREATED)

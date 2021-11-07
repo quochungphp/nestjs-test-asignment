@@ -25,12 +25,12 @@ import { AuthVerifyApiKey } from '../auth/AuthVerifyApiKey/AuthVerifyApiKey';
 
 @ApiTags('Users')
 @ApiBearerAuth()
-@UseGuards(RolesGuard)
 @Controller('users')
 export class UserController {
   constructor(private userGetAction: UserGetAction, private userCreateAction: UserCreateAction) {}
 
   @ApiParam({ name: 'id', required: true, type: Number, example: 'Enter user id' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(roleType.USER)
   @HttpCode(HttpStatus.OK)
   @Get(':id')

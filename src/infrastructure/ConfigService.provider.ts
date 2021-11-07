@@ -1,13 +1,15 @@
 /* eslint-disable unicorn/prefer-node-protocol */
 /* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable @typescript-eslint/lines-between-class-members */
+import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 
+@Injectable()
 export class ConfigService {
   private readonly envConfig: { [key: string]: string };
-  constructor(filePath: string) {
-    this.envConfig = dotenv.parse(fs.readFileSync(filePath));
+  constructor() {
+    this.envConfig = dotenv.parse(fs.readFileSync('.env'));
   }
   private int(value: string | undefined, number: number): number {
     return value
@@ -30,13 +32,13 @@ export class ConfigService {
   }
 
   get postgresConnection(): string {
-    return this.envConfig['INTEGRATION_TESTING'] === 'true'
-      ? this.envConfig['PG_TEST_CONNECTION_STRING']
+    return this.isIntegrationTest === true
+      ? this.envConfig['DATABASE_TEST_URL']
       : this.envConfig['DATABASE_URL'] || '';
   }
 
   get redisClusterMode(): 'nats_cluster' | 'aws_elasticache' | 'local_cluster' {
-    const mode = this.envConfig['REDIS_CLUSTER_MODE'] || '';
+    const mode = process.env.REDIS_CLUSTER_MODE || this.envConfig['REDIS_CLUSTER_MODE'] || '';
     if (mode && ['nats_cluster', 'aws_elasticache', 'local_cluster'].includes(mode)) {
       return mode as 'nats_cluster' | 'aws_elasticache' | 'local_cluster';
     }
@@ -44,16 +46,17 @@ export class ConfigService {
   }
 
   get redisClusterHost(): string {
-    return this.envConfig['REDIS_CLUSTER_HOST'] || '127.0.0.1';
+    return process.env.REDIS_CLUSTER_HOST || this.envConfig['REDIS_CLUSTER_HOST'] || '127.0.0.1';
   }
 
   get redisClusterPort(): number {
-    return Number(this.envConfig['REDIS_CLUSTER_PORT']) || 6000;
+    return Number(process.env.REDIS_CLUSTER_PORT || this.envConfig['REDIS_CLUSTER_PORT']) || 6000;
   }
 
   get redisClusterSlaveRead(): string {
     const defaultMode = 'never';
-    const redisClusterSlaveRead = this.envConfig['REDIS_CLUSTER_SLAVE_READ'] || '';
+    const redisClusterSlaveRead =
+      process.env.REDIS_CLUSTER_SLAVE_READ || this.envConfig['REDIS_CLUSTER_SLAVE_READ'] || '';
     if (!redisClusterSlaveRead) {
       return defaultMode;
     }
@@ -63,19 +66,23 @@ export class ConfigService {
       : defaultMode;
   }
   get apiKey(): string {
-    return this.envConfig['API_KEY'] || '';
+    return process.env.API_KEY || this.envConfig['API_KEY'] || '';
   }
   get useRedisCluster(): boolean {
-    return this.envConfig['USE_REDIS_CLUSTER'] === 'true' || false;
+    return (
+      (process.env.USE_REDIS_CLUSTER || this.envConfig['USE_REDIS_CLUSTER']) === 'true' || false
+    );
   }
   get redisHost(): string {
-    return this.envConfig['REDIS_HOST'] || '';
+    return process.env.REDIS_HOST || this.envConfig['REDIS_HOST'] || '';
   }
   get redisPort(): number {
-    return this.envConfig['REDIS_PORT'] ? Number.parseInt(this.envConfig['REDIS_PORT'], 10) : 0;
+    return process.env.REDIS_PORT || this.envConfig['REDIS_PORT']
+      ? Number.parseInt(this.envConfig['REDIS_PORT'], 10)
+      : 0;
   }
   get redisPrefix(): string {
-    return this.envConfig['INTEGRATION_TESTING'] === 'true' ? 'db-test' : 'db-test';
+    return this.envConfig['INTEGRATION_TESTING'] === 'true' ? 'dbtest' : 'dbtest';
   }
   get jwtSecret(): string {
     return this.envConfig['JWT_SECRET'] || 'test';
@@ -95,20 +102,34 @@ export class ConfigService {
   }
 
   get host(): string {
-    return this.envConfig['IS_PRISMA_LOG_ENABLED'] || '127.0.0.1';
+    return this.envConfig['HOST'] || '127.0.0.1';
   }
   get port(): number {
     return this.int(this.envConfig['PORT'], 3131);
   }
 
   get corsAllowedOrigins(): string[] | string {
-    return this.cors(process.env.CORS_ALLOWED_ORIGINS || 'all');
+    return this.cors(process.env.CORS_ALLOWED_ORIGINS || process.env.CORS_ALLOWED_ORIGINS || 'all');
   }
   get corsEnabled(): boolean {
-    return this.bool(this.envConfig['IS_PRISMA_LOG_ENABLED'], true);
+    return this.bool(
+      process.env.IS_PRISMA_LOG_ENABLED || this.envConfig['IS_PRISMA_LOG_ENABLED'],
+      true,
+    );
   }
 
   get isRedisCluster(): boolean {
-    return this.bool(this.envConfig['IS_REDIS_CLUSTER'], false);
+    return this.bool(process.env.IS_REDIS_CLUSTER || this.envConfig['IS_REDIS_CLUSTER'], false);
+  }
+
+  get isIntegrationTest(): boolean {
+    return this.bool(
+      process.env.IS_INTEGRATION_TESTING || this.envConfig['IS_INTEGRATION_TESTING'],
+      false,
+    );
+  }
+
+  get environment(): string {
+    return process.env.NODE_ENV || this.envConfig['NODE_ENV'] || 'development';
   }
 }

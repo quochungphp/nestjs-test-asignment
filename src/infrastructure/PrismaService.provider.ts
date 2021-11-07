@@ -7,9 +7,7 @@ import { ConfigService } from './ConfigService.provider';
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor(configService: ConfigService) {
-
-    const {isPrismaLogEnabled , postgresConnection} = configService;
-
+    const { isPrismaLogEnabled, postgresConnection } = configService;
     const prismaClientOptions: PrismaClientOptions = {
       datasources: {
         db: {

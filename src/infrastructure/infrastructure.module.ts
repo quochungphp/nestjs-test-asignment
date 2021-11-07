@@ -7,9 +7,8 @@ import { ConfigService } from './ConfigService.provider';
 import { RedisService } from './RedisService.provider';
 import { PrismaService } from './PrismaService.provider';
 import { IdGeneratorService } from '../pkgs/IdGeneratorService';
-import { RequestSessionService } from '../pkgs/RequestSessionService';
 
-const configService = new ConfigService('.env');
+const configService = new ConfigService();
 const { jwtSecret, accessTokenExpiry } = configService;
 @Module({
   imports: [
@@ -24,25 +23,7 @@ const { jwtSecret, accessTokenExpiry } = configService;
     PassportModule.register({ defaultStrategy: 'jwt' }),
     HttpModule.register({}),
   ],
-  exports: [
-    {
-      provide: ConfigService,
-      useValue: configService,
-    },
-
-    RedisService,
-    JwtModule,
-    PrismaService,
-    HttpModule,
-    IdGeneratorService,
-    RequestSessionService,
-  ],
-  providers: [
-    ConfigService,
-    RedisService,
-    PrismaService,
-    IdGeneratorService,
-    RequestSessionService,
-  ],
+  exports: [ConfigService, RedisService, JwtModule, PrismaService, HttpModule, IdGeneratorService],
+  providers: [ConfigService, RedisService, PrismaService, IdGeneratorService],
 })
 export class InfrastructureModule {}

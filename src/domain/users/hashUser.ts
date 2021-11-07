@@ -12,14 +12,13 @@ export const verify = async (password: string, hashPassword: string): Promise<bo
   if (!hashPassword) {
     return false;
   }
-
   return compare(password, hashPassword);
 };
 
 export const hashPassword = async (
   password: string,
-  email: string,
+  hashString: string,
   preHashSalt = 'hash-password',
 ): Promise<string> => {
-  return sha256.hmac.update(preHashSalt, `${email}${preHashSalt}${password}`).hex();
+  return sha256.hmac.update(preHashSalt, `${hashString}${preHashSalt}${password}`).hex();
 };

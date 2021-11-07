@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserResponseDto } from '../UserGet/UserResponseDto';
 import { UserCreatePayloadDto } from './UserCreatePayloadDto';
-import { hashAndValidatePassword, hashPassword } from '../hashUser';
+import { hashAndValidatePassword } from '../hashUser';
 import { PrismaService } from '../../../infrastructure/PrismaService.provider';
 import { UsernameConflictException } from '../../../pkgs/exceptions/UsernameConflictException';
 import { RequestContext } from '../../../pkgs/RequestContext';
@@ -23,11 +23,7 @@ export class UserCreateAction {
       throw new UsernameConflictException('User has already conflicted');
     }
     const { saltRounds } = this.configService;
-    let hashPass = '';
-    if (password) {
-      const pass = await hashPassword(password, name);
-      hashPass = await hashAndValidatePassword(pass, saltRounds);
-    }
+    const hashPass = await hashAndValidatePassword(password, saltRounds);
 
     const user = await this.prismaService.users.create({
       data: {

@@ -1,4 +1,3 @@
-import { AuthAdminDto } from '../src/domain/auth/AuthAdminDto';
 import { Logger } from '../src/pkgs/Logger';
 
 declare global {
@@ -6,7 +5,6 @@ declare global {
     interface Request {
       logger: Logger;
       correlationId: string;
-      user: AuthAdminDto;
     }
   }
 }

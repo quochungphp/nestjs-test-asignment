@@ -37,6 +37,9 @@ ALTER ROLE "user_login" WITH SUPERUSER;
 
 ```bash
 CREATE DATABASE dbtest;
+
+# using for ci test
+CREATE DATABASE db-test-integration;
 ```
 
 6. Export ENV
@@ -49,7 +52,7 @@ export PG_PASS=password
 export PG_DB=dbtest
 export PORT=9090
 
-export DATABASE_URL=postgres://user_login:password@127.0.0.1:5432/db-test
+export DATABASE_URL=postgres://user_login:password@127.0.0.1:5432/dbtest
 export DATABASE_TEST_URL=postgres://user_login:password@127.0.0.1:5432/db-integration-test
 
 export REDIS_HOST=127.0.0.1
@@ -57,6 +60,80 @@ export REDIS_PORT=6379
 export REDIS_CACHE_EXPIRES_IN=604800
 ```
 
-6. Create tables and insert test data, please take a look for db.sql
+6. Create tables and insert test data for both of dbtest and db-test-integration
 
-### Install go packages & run app
+```sql
+CREATE TYPE "roleType" AS ENUM ('ADMIN', 'USER', 'EDITOR');
+
+--- create user table
+CREATE TABLE public.users (
+  id bigserial NOT NULL,
+  name varchar(50) NOT NULL,
+  username varchar(50) unique NOT NULL,
+  password varchar(100) NOT NULL,
+  "createdAt" timestamp(6) NULL DEFAULT LOCALTIMESTAMP,
+  "roleType" "roleType" default 'USER' NOT NULL,
+  CONSTRAINT users_PK PRIMARY KEY (id)
+);
+
+--- create index
+CREATE INDEX "roleType_IDX"  ON public."users" USING btree ("roleType");
+CREATE INDEX "createdAt_IDX"  ON public."users" USING btree ("createdAt");
+
+
+--- insert users
+INSERT INTO public.users (name, username, "password", "createdAt", "roleType") VALUES('Administrator', 'admin', '$2a$10$MSlzbaal5/i3PMaGMDocjefbyQzdR58MWMyWA1JrFScgsmO4Fku62', '2021-10-31 08:20:35.159', 'ADMIN');
+INSERT INTO public.users (name, username, "password", "createdAt", "roleType") VALUES('User','user', '$2a$10$MSlzbaal5/i3PMaGMDocjefbyQzdR58MWMyWA1JrFScgsmO4Fku62', '2021-10-31 08:20:35.159', 'USER');
+INSERT INTO public.users (name, username, "password", "createdAt", "roleType") VALUES('Accountant','accountant', '$2a$10$MSlzbaal5/i3PMaGMDocjefbyQzdR58MWMyWA1JrFScgsmO4Fku62', '2021-10-31 08:20:35.159', 'USER');
+INSERT INTO public.users (name, username, "password", "createdAt", "roleType") VALUES('DevOps','devops', '$2a$10$MSlzbaal5/i3PMaGMDocjefbyQzdR58MWMyWA1JrFScgsmO4Fku62', '2021-10-31 08:20:35.159', 'USER');
+```
+
+## Setting project before running
+
+1.Intsall npm packages
+
+```bash
+npm install
+```
+
+2.Run prisma generate to generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+## Development
+
+```bash
+npm run dev
+```
+
+## Buid
+
+```bash
+npm run build
+```
+
+## Production
+
+```bash
+npm run start
+```
+
+## Run Unit Testing
+
+```bash
+npm run test
+```
+
+# Run Integration Testing
+
+```bash
+npm run test:integration
+```
+
+# Run a single test integration
+
+```
+npm run test:integration:auth
+```

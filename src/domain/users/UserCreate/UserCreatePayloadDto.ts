@@ -9,7 +9,7 @@ export class UserCreatePayloadDto {
 
   @ApiProperty({ example: '123456@abc' })
   @IsString()
-  @Length(6, 50)
+  @Length(6, 100)
   password!: string;
 
   @ApiProperty({ example: 'Lorem', required: true, type: String })

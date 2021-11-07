@@ -102,38 +102,41 @@ npm install
 npx prisma generate
 ```
 
-## Development
+### Development
 
 ```bash
 npm run dev
 ```
 
-## Buid
+### Buid
 
 ```bash
 npm run build
 ```
 
-## Production
+### Production
 
 ```bash
 npm run start
 ```
 
-## Run Unit Testing
+### Run Unit Testing
 
 ```bash
 npm run test
 ```
 
-# Run Integration Testing
+### Run Integration Testing
 
 ```bash
 npm run test:integration
 ```
 
-# Run a single test integration
+### Run a single test integration
 
 ```
 npm run test:integration:auth
 ```
+### Ci integration test
+
+![image](https://user-images.githubusercontent.com/12770929/140634141-68f34c12-6f25-4846-8c03-65629299266c.png)

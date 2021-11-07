@@ -18,3 +18,16 @@ export const tearDownTestData = async (
     },
   });
 };
+
+export const deleteUsers = async (prismaService: PrismaService, ids: bigint[]) => {
+  if (ids.length === 0) {
+    return;
+  }
+  await prismaService.users.deleteMany({
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+};

@@ -5,7 +5,6 @@ import { PrismaService } from '../../../infrastructure/PrismaService.provider';
 import { RedisService } from '../../../infrastructure/RedisService.provider';
 import { IdGeneratorService } from '../../../pkgs/IdGeneratorService';
 import { tearDownTestData } from '../../../pkgs/testHelpers/testHelpers';
-import { wait } from '../../../pkgs/wait';
 import { hashPassword } from '../../users/hashUser';
 import { setupTestAuthController } from '../setupTesAuthController';
 
@@ -15,7 +14,6 @@ describe('AuthController', () => {
   let redisService: RedisService;
   let configService: ConfigService;
   let idGeneratorService: IdGeneratorService;
-  const seededAdminIds: bigint[] = [];
 
   beforeAll(async () => {
     const appContext = await setupTestAuthController();

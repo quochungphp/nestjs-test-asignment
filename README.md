@@ -50,7 +50,7 @@ export PG_PORT=5432
 export PG_USER=user_login
 export PG_PASS=password
 export PG_DB=dbtest
-export PORT=9090
+export PORT=3131
 
 export DATABASE_URL=postgres://user_login:password@127.0.0.1:5432/dbtest
 export DATABASE_TEST_URL=postgres://user_login:password@127.0.0.1:5432/db-integration-test

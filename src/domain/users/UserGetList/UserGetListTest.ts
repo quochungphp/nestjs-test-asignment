@@ -99,7 +99,7 @@ describe('UserController', () => {
         { id: expect.any(String), name: 'admin-test-1', roleType: 'USER' },
         { id: expect.any(String), name: 'admin-test-2', roleType: 'USER' },
         { id: expect.any(String), name: 'admin-test-3', roleType: 'USER' },
-        { id: expect.any(String), name: 'Aministrator', roleType: 'ADMIN' },
+        { id: expect.any(String), name: 'Administrator', roleType: 'ADMIN' },
       ]);
     });
 
